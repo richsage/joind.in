@@ -307,11 +307,14 @@ class Talks_model extends Model
                 tc.comment_type,
                 tc.source,
                 e.event_tz_cont,
-                e.event_tz_place
+                e.event_tz_place,
+                oc.description consumer_description
             from
                 talk_comments tc
             left join
                 user u on u.ID = tc.user_id
+            left join
+                oauth_consumers oc on tc.consumer_id = oc.id
             inner join
                 talks t on t.ID = tc.talk_id
             inner join

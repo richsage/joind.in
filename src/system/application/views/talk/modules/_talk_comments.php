@@ -68,7 +68,8 @@ if (empty($comments)) {
     <div class="text">
         <p class="info">
             <strong><?=$v->display_datetime?></strong> by <strong><?php echo $uname; ?></strong>
-            <?php echo !empty($v->source)?"via ".escape($v->source) : "" ?>
+            <?php $source = (!empty($v->consumer_description) ? $v->consumer_description : $v->source); ?>
+            <?php echo !empty($source)?"via ".escape($source) : "" ?>
         <?php if ($v->private == 1): ?>
             <span class="private">Private</span>
         <?php endif; ?>
