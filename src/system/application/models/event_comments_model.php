@@ -46,7 +46,9 @@ class Event_comments_model extends Model
      */
     public function getEventComments($eid)
     {
+        $this->db->select('event_comments.*, oauth_consumers.description as consumer_description');
         $this->db->from('event_comments');
+        $this->db->join('oauth_consumers', 'event_comments.consumer_id = oauth_consumers.id', 'left');
         $this->db->where('event_id', $eid);
         $q = $this->db->get();
 

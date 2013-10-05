@@ -26,7 +26,8 @@ if (!empty($msg)):
         <div class="text">
             <p class="info">
                 <strong><?=$comment->display_datetime; ?></strong> by <strong><?php echo $uname; ?></strong>
-                <?php echo !empty($comment->source)?"via ".escape($comment->source) : "" ?>
+                <?php $source = (!empty($comment->consumer_description) ? $comment->consumer_description : $comment->source); ?>
+                <?php echo !empty($source)?"via ".escape($source) : "" ?>
                 (<?php echo escape($type); ?>)
             </p>
             <div class="desc">
