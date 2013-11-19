@@ -56,6 +56,10 @@ class Twitter extends AuthAbstract
     public function request_token()
     {
         $this->loadTwitterLibrary();
+        if ($this->session->flashdata('url_after_login')) {
+            // Keep the URL to go to after a login (used in joind.in OAuth authentication)
+            $this->session->set_flashdata('url_after_login', $this->session->flashdata('url_after_login'));
+        }
         $response = $this->twitter_oauth->get_request_token(
             site_url("twitter/access_token")
         );
@@ -109,9 +113,17 @@ class Twitter extends AuthAbstract
                 '', '', $user_info->name, $response['screen_name']
             );
 
-            // now, since they're set up, log them in a push them to the account
-            // management page
             $this->session->set_userdata((array)$ret);
+
+            // Do we have a URL to go to afterwards?
+            $redirectAfterLogin = $this->session->flashdata('url_after_login');
+            if ($redirectAfterLogin) {
+                redirect($redirectAfterLogin); // go to it
+            }
+
+            // No predefined URL, so since they're now set up,
+            // log them in and push them to the account
+            // management page
             $this->session->set_flashdata(
                 'msg',
                 'To receive notifications; please enter your e-mail address.'
